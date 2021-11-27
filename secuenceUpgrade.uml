@@ -1,0 +1,28 @@
+title upgrade firmware OTA jajicaiot
+participant mqtt-launcher-master
+participant jajicaIotApp
+participant otaServer
+participant device
+
+jajicaIotApp->mqtt-launcher-master: {"upgradeFirmware":{"otaVersiontype":deviceType}}
+
+mqtt-launcher-master->jajicaIotApp: 200 ok,  servidorWeb/lastVersion/deviceType/lastVersion.json
+note right of mqtt-launcher-master:{"dlgResultCode": 200, data to upgrade}
+
+alt lastVersion > version
+
+note over jajicaIotApp:notify in app the new version available
+jajicaIotApp->device:upgradeota(lastVersion.json)
+device->otaServer:upgradeFirmware(lastVersion)
+otaServer->device:send file firmware
+device->jajicaIotApp: end upgrade, restart device
+
+else 
+jajicaIotApp->jajicaIotApp:nothing
+end 
+
+alt error 
+
+jajicaIotApp->jajicaIotApp:dd
+
+end
