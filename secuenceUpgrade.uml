@@ -21,8 +21,3 @@ else
 jajicaIotApp->jajicaIotApp:nothing
 end 
 
-alt error 
-
-jajicaIotApp->jajicaIotApp:dd
-
-end
